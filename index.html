@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKU-EB Physics HSSC Part I — YouTube Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #161d2e;
+    --accent: #f97316;
+    --accent2: #38bdf8;
+    --accent3: #a78bfa;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e2d47;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(56,189,248,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 60px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  .board-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  header h1 span {
+    color: var(--accent);
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+
+  /* Search bar */
+  .search-wrap {
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 12px 44px 12px 16px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  .search-icon {
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  /* Chapter blocks */
+  .chapter {
+    margin-bottom: 32px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .chapter:hover { border-color: rgba(249,115,22,0.3); }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--card);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .chapter-header:hover { background: #1a2236; }
+
+  .ch-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.2);
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 1px;
+  }
+
+  .ch-title {
+    flex: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .ch-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .chevron {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .chapter.open .chevron { transform: rotate(180deg); }
+
+  /* Topics list */
+  .topics-list {
+    display: none;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+  .chapter.open .topics-list { display: block; }
+
+  .topic-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(30,45,71,0.6);
+    transition: background 0.15s;
+  }
+  .topic-item:last-child { border-bottom: none; }
+  .topic-item:hover { background: rgba(255,255,255,0.02); }
+
+  .topic-info { flex: 1; min-width: 0; }
+
+  .topic-slo {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent3);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .topic-name {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .yt-query {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    background: rgba(56,189,248,0.07);
+    border: 1px solid rgba(56,189,248,0.15);
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
+  }
+
+  .yt-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ff0000;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-top: 2px;
+  }
+  .yt-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  /* Tag row */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+  .tag-r { background: rgba(167,139,250,0.1); color: var(--accent3); border: 1px solid rgba(167,139,250,0.2); }
+  .tag-u { background: rgba(56,189,248,0.1); color: var(--accent2); border: 1px solid rgba(56,189,248,0.2); }
+  .tag-a { background: rgba(249,115,22,0.1); color: var(--accent); border: 1px solid rgba(249,115,22,0.2); }
+
+  /* Stats */
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 24px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    padding: 14px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+
+  /* Hidden class */
+  .hidden { display: none !important; }
+
+  /* Scroll top btn */
+  #scrollTop {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px; height: 44px;
+    font-size: 18px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    box-shadow: 0 4px 16px rgba(249,115,22,0.4);
+  }
+  #scrollTop.visible { display: flex; }
+
+  @media (max-width: 600px) {
+    .topic-item { flex-direction: column; }
+    .chapter-header { padding: 16px; }
+    .topic-item { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <span class="board-label">AKU-EB · HSSC · 2025 Syllabus</span>
+    <h1>Physics <span>Part I</span><br>YouTube Study Guide</h1>
+    <p>Every chapter and sub-topic from Grade XI, with ready-made YouTube search queries. Click any button to search instantly.</p>
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Filter topics, e.g. Newton, SHM, Bernoulli…">
+      <span class="search-icon">🔍</span>
+    </div>
+  </header>
+
+  <div class="stats-row">
+    <div class="stat-card"><span class="stat-num">10</span><span class="stat-label">Chapters</span></div>
+    <div class="stat-card"><span class="stat-num">47+</span><span class="stat-label">Sub-Topics</span></div>
+    <div class="stat-card"><span class="stat-num">100+</span><span class="stat-label">SLOs</span></div>
+    <div class="stat-card"><span class="stat-num">85</span><span class="stat-label">Exam Marks</span></div>
+  </div>
+
+  <div class="legend">
+    <span style="color:var(--muted); font-size:12px; margin-right:4px;">Cognitive levels:</span>
+    <span class="legend-item"><span class="tag tag-r">R</span> Remember</span>
+    <span class="legend-item"><span class="tag tag-u">U</span> Understand</span>
+    <span class="legend-item"><span class="tag tag-a">A</span> Apply & Beyond</span>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div id="chaptersContainer">
+
+    <!-- CH 1 -->
+    <div class="chapter" data-chapter="1">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 01</span>
+        <span class="ch-title">Physical Quantities & Measurement</span>
+        <span class="ch-count">4 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 1.1 — Physical Quantities</div>
+            <div class="topic-name">SI base quantities, derived units, numerical magnitude and unit</div>
+            <span class="yt-query">SI base units derived units physics class 11</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span><span class="tag tag-a">E</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=SI+base+units+derived+units+physics+class+11" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 1.2 — Dimensions</div>
+            <div class="topic-name">Concept of dimensions, homogeneity of equations, deriving formulas by dimensions</div>
+            <span class="yt-query">dimensional analysis physics homogeneity equations</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=dimensional+analysis+physics+homogeneity+equations" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 1.3 — Precision & Accuracy</div>
+            <div class="topic-name">Difference between precision and accuracy; analysing measuring instruments</div>
+            <span class="yt-query">precision vs accuracy physics measurement class 11</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">An</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=precision+vs+accuracy+physics+measurement+class+11" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 1.4 — Significant Figures & Uncertainty</div>
+            <div class="topic-name">Uncertainty in derived quantities, significant figures, all measurements contain uncertainty</div>
+            <span class="yt-query">significant figures uncertainty physics measurements</span>
+            <div class="tag-row"><span class="tag tag-a">A</span><span class="tag tag-a">E</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=significant+figures+uncertainty+physics+measurements" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 2 -->
+    <div class="chapter" data-chapter="2">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 02</span>
+        <span class="ch-title">Scalars and Vectors</span>
+        <span class="ch-count">4 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 2.1 — Introduction to Vectors</div>
+            <div class="topic-name">Differentiating scalar and vector quantities</div>
+            <span class="yt-query">scalar vs vector quantities physics class 11</span>
+            <div class="tag-row"><span class="tag tag-r">R</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=scalar+vs+vector+quantities+physics+class+11" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 2.2 — Addition by Rectangular Components</div>
+            <div class="topic-name">Resolving vectors, resultant by rectangular component method</div>
+            <span class="yt-query">vector addition rectangular components method physics</span>
+            <div class="tag-row"><span class="tag tag-a">An</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=vector+addition+rectangular+components+method+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 2.3 — Scalar (Dot) Product</div>
+            <div class="topic-name">Definition, angle between vectors, properties of dot product</div>
+            <span class="yt-query">scalar dot product two vectors physics examples</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=scalar+dot+product+two+vectors+physics+examples" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 2.4 — Vector (Cross) Product</div>
+            <div class="topic-name">Definition, angle between vectors, properties of cross product</div>
+            <span class="yt-query">vector cross product physics properties angle</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=vector+cross+product+physics+properties+angle" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 3 -->
+    <div class="chapter" data-chapter="3">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 03</span>
+        <span class="ch-title">Motion in One Dimension</span>
+        <span class="ch-count">5 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 3.1 — Equations of Motion</div>
+            <div class="topic-name">Deriving kinematic equations, uniformly accelerated motion, free fall problems</div>
+            <span class="yt-query">equations of motion derivation uniformly accelerated physics</span>
+            <div class="tag-row"><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=equations+of+motion+derivation+uniformly+accelerated+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 3.2 — Conservation of Momentum</div>
+            <div class="topic-name">Law of conservation of momentum, elastic & inelastic collisions, rocket motion</div>
+            <span class="yt-query">law of conservation of momentum elastic inelastic collision physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=law+of+conservation+of+momentum+elastic+inelastic+collision+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 3.3 — Work</div>
+            <div class="topic-name">Work as dot product of force & displacement; work from F-d graphs</div>
+            <span class="yt-query">work done dot product force displacement physics graph</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">E</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=work+done+dot+product+force+displacement+physics+graph" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 3.4 — Conservative vs Non-Conservative Fields</div>
+            <div class="topic-name">Differences between conservative and non-conservative force fields</div>
+            <span class="yt-query">conservative non-conservative force field physics examples</span>
+            <div class="tag-row"><span class="tag tag-r">R</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=conservative+non-conservative+force+field+physics+examples" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 3.5 — Work-Energy Theorem</div>
+            <div class="topic-name">Deducing work-energy theorem in resistive & non-resistive media</div>
+            <span class="yt-query">work energy theorem derivation resistive medium physics</span>
+            <div class="tag-row"><span class="tag tag-a">E</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=work+energy+theorem+derivation+resistive+medium+physics" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 4 -->
+    <div class="chapter" data-chapter="4">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 04</span>
+        <span class="ch-title">Motion in Two Dimensions</span>
+        <span class="ch-count">5 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 4.1 — Projectile Motion</div>
+            <div class="topic-name">Time of flight, max height, range, max horizontal range derivations & problems</div>
+            <span class="yt-query">projectile motion derivation time of flight range maximum height</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=projectile+motion+derivation+time+of+flight+range+maximum+height" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 4.2 — Angular Motion</div>
+            <div class="topic-name">Angular displacement, velocity, acceleration; relationship between linear and angular quantities</div>
+            <span class="yt-query">angular displacement velocity acceleration linear relationship physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=angular+displacement+velocity+acceleration+linear+relationship+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 4.3 — Centripetal Force & Acceleration</div>
+            <div class="topic-name">Centripetal force/acceleration derivation, centrifuge, weightlessness in satellites</div>
+            <span class="yt-query">centripetal force acceleration derivation uniform speed satellite weightlessness</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=centripetal+force+acceleration+derivation+uniform+speed+satellite+weightlessness" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 4.4 — Moment of Inertia</div>
+            <div class="topic-name">Moment of inertia SI units, rod/ring/disc/sphere, torque-inertia-angular acceleration</div>
+            <span class="yt-query">moment of inertia rod disc sphere torque angular acceleration physics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=moment+of+inertia+rod+disc+sphere+torque+angular+acceleration+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 4.5 — Angular Momentum</div>
+            <div class="topic-name">Angular momentum, conservation law, flywheels, gyroscopes, ice skaters</div>
+            <span class="yt-query">angular momentum conservation law applications flywheel gyroscope</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=angular+momentum+conservation+law+applications+flywheel+gyroscope" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 5 -->
+    <div class="chapter" data-chapter="5">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 05</span>
+        <span class="ch-title">Deformation in Solids</span>
+        <span class="ch-count">5 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 5.1 — Types of Solids</div>
+            <div class="topic-name">Crystalline, amorphous, and polymeric solid structures</div>
+            <span class="yt-query">crystalline amorphous polymeric solids structure differences physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=crystalline+amorphous+polymeric+solids+structure+differences+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 5.2–5.3 — Deformation, Elastic & Plastic</div>
+            <div class="topic-name">Elastic deformation, plastic deformation, elastic limit</div>
+            <span class="yt-query">elastic plastic deformation elastic limit physics solids</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=elastic+plastic+deformation+elastic+limit+physics+solids" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 5.4 — Stress, Strain & Young Modulus</div>
+            <div class="topic-name">Define stress, strain, Young modulus; force-extension graph; word problems</div>
+            <span class="yt-query">stress strain Young modulus force extension graph physics problems</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">E A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=stress+strain+Young+modulus+force+extension+graph+physics+problems" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 5.5 — Elastic Potential Energy</div>
+            <div class="topic-name">E = ½Fx = ½kx² for elastic materials</div>
+            <span class="yt-query">elastic potential energy spring formula half kx squared physics</span>
+            <div class="tag-row"><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=elastic+potential+energy+spring+formula+half+kx+squared+physics" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 6 -->
+    <div class="chapter" data-chapter="6">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 06</span>
+        <span class="ch-title">Fluid Dynamics</span>
+        <span class="ch-count">5 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 6.1 — Floating Objects</div>
+            <div class="topic-name">Upthrust = ρgV, Archimedes' principle, principle of floatation, ships</div>
+            <span class="yt-query">upthrust Archimedes principle floatation ships buoyancy physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A E</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=upthrust+Archimedes+principle+floatation+ships+buoyancy+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 6.2 — Streamline & Turbulent Flow</div>
+            <div class="topic-name">Laminar flow, turbulent flow, incompressible flow, conditions for turbulence</div>
+            <span class="yt-query">streamline laminar turbulent flow physics conditions</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=streamline+laminar+turbulent+flow+physics+conditions" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 6.3 — Equation of Continuity</div>
+            <div class="topic-name">Derivation of continuity equation; flow velocity in rubber pipe</div>
+            <span class="yt-query">equation of continuity derivation fluid dynamics physics</span>
+            <div class="tag-row"><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=equation+of+continuity+derivation+fluid+dynamics+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 6.4 — Bernoulli's Equation</div>
+            <div class="topic-name">Derivation, pressure difference, atomizer, swing of ball, Magnus effect, venturi duct</div>
+            <span class="yt-query">Bernoulli equation derivation applications atomizer Magnus effect venturi</span>
+            <div class="tag-row"><span class="tag tag-a">A E</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=Bernoulli+equation+derivation+applications+atomizer+Magnus+effect+venturi" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 6.5 — Viscous Fluids & Fluid Friction</div>
+            <div class="topic-name">Viscous vs non-viscous fluids, retarding force, fluid friction, superfluidity</div>
+            <span class="yt-query">viscosity fluid friction superfluidity physics real fluids</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=viscosity+fluid+friction+superfluidity+physics+real+fluids" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 7 -->
+    <div class="chapter" data-chapter="7">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 07</span>
+        <span class="ch-title">Oscillations</span>
+        <span class="ch-count">8 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 7.1 — Simple Harmonic Motion</div>
+            <div class="topic-name">Periodic vs non-periodic oscillation; description of SHM</div>
+            <span class="yt-query">simple harmonic motion periodic oscillation definition physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=simple+harmonic+motion+periodic+oscillation+definition+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 7.2 — Uniform Circular Motion & SHM</div>
+            <div class="topic-name">Displacement, amplitude, period, frequency, angular frequency, phase difference; instantaneous displacement/velocity/acceleration expressions</div>
+            <span class="yt-query">SHM circular motion displacement velocity acceleration angular frequency derivation</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A An</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=SHM+circular+motion+displacement+velocity+acceleration+angular+frequency+derivation" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 7.3 — Mass-Spring System</div>
+            <div class="topic-name">SHM under elastic restoring force; time period derivation for mass-spring system</div>
+            <span class="yt-query">mass spring system time period derivation SHM physics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=mass+spring+system+time+period+derivation+SHM+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 7.4 — Simple Pendulum</div>
+            <div class="topic-name">Pendulum as SHM; time period derivation; word problems</div>
+            <span class="yt-query">simple pendulum SHM time period derivation problems physics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=simple+pendulum+SHM+time+period+derivation+problems+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 7.5 — Energy Conservation in SHM</div>
+            <div class="topic-name">Energy conservation in mass-spring SHM; KE and PE interchange</div>
+            <span class="yt-query">energy conservation SHM kinetic potential energy mass spring physics</span>
+            <div class="tag-row"><span class="tag tag-a">A An</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=energy+conservation+SHM+kinetic+potential+energy+mass+spring+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 7.6–7.7 — Free, Forced Oscillation & Resonance</div>
+            <div class="topic-name">Free and forced oscillations; resonance definition and real-life applications</div>
+            <span class="yt-query">free forced oscillation resonance applications physics real life</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=free+forced+oscillation+resonance+applications+physics+real+life" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 7.8 — Damped Oscillations</div>
+            <div class="topic-name">Damped oscillation explanation; light, critical, heavy damping graphs</div>
+            <span class="yt-query">damped oscillations light critical heavy damping graph physics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=damped+oscillations+light+critical+heavy+damping+graph+physics" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 8 -->
+    <div class="chapter" data-chapter="8">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 08</span>
+        <span class="ch-title">Waves</span>
+        <span class="ch-count">6 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 8.1 — Wave Motion</div>
+            <div class="topic-name">Progressive waves, energy transfer, intensity ∝ amplitude², V = fλ</div>
+            <span class="yt-query">progressive waves intensity amplitude squared V=flambda physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=progressive+waves+intensity+amplitude+squared+V+flambda+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 8.2 — Transverse & Longitudinal Waves</div>
+            <div class="topic-name">Differences between transverse and longitudinal waves; graphical representations</div>
+            <span class="yt-query">transverse vs longitudinal waves graphical representation physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=transverse+vs+longitudinal+waves+graphical+representation+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 8.3 — Superposition of Waves</div>
+            <div class="topic-name">Superposition principle, interference of sound, phase difference, beats</div>
+            <span class="yt-query">superposition interference sound waves beats phase difference physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=superposition+interference+sound+waves+beats+phase+difference+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 8.4 — Stationary Waves</div>
+            <div class="topic-name">Nodes, antinodes, stationary waves in string and air column, word problems</div>
+            <span class="yt-query">stationary standing waves nodes antinodes string air column physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=stationary+standing+waves+nodes+antinodes+string+air+column+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 8.5 — Doppler's Effect</div>
+            <div class="topic-name">Doppler's effect derivation for all four conditions; radar, sonar, red/blue shift</div>
+            <span class="yt-query">Doppler effect derivation source listener moving physics radar sonar redshift</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=Doppler+effect+derivation+source+listener+moving+physics+radar+sonar+redshift" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 8.6 — Waves in Modern World</div>
+            <div class="topic-name">Medical uses, digital transmission, information storage, earthquakes/tsunami monitoring</div>
+            <span class="yt-query">waves modern world medical digital transmission earthquake monitoring physics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=waves+modern+world+medical+digital+transmission+earthquake+monitoring+physics" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 9 -->
+    <div class="chapter" data-chapter="9">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 09</span>
+        <span class="ch-title">Physical Optics</span>
+        <span class="ch-count">6 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 9.1 — Nature of Light</div>
+            <div class="topic-name">Wave-front concept, Huygens' principle, nature of light debate</div>
+            <span class="yt-query">Huygens principle wavefront nature of light physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">E</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=Huygens+principle+wavefront+nature+of+light+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 9.2 — Interference of Light</div>
+            <div class="topic-name">Coherent sources, Young's double slit, fringe spacing derivation & problems</div>
+            <span class="yt-query">Young double slit experiment fringe spacing derivation problems physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=Young+double+slit+experiment+fringe+spacing+derivation+problems+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 9.3 — Michelson's Interferometer</div>
+            <div class="topic-name">Construction and working of Michelson's interferometer; gravitational waves detection</div>
+            <span class="yt-query">Michelson interferometer working gravitational waves detection physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=Michelson+interferometer+working+gravitational+waves+detection+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 9.4 — Diffraction of Light</div>
+            <div class="topic-name">Diffraction by grating, narrow slit; word problems</div>
+            <span class="yt-query">diffraction grating narrow slit light physics word problems</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=diffraction+grating+narrow+slit+light+physics+word+problems" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 9.5 — Bragg's Law</div>
+            <div class="topic-name">Bragg's law, X-ray diffraction through crystals, 2d sinθ = mλ derivation</div>
+            <span class="yt-query">Bragg law X-ray diffraction crystals derivation 2d sin theta physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=Bragg+law+X-ray+diffraction+crystals+derivation+2d+sin+theta+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 9.6 — Polarisation</div>
+            <div class="topic-name">Unpolarised & polarised light, polarisation by reflection & polaroid, Malus's law</div>
+            <span class="yt-query">polarisation Malus law polaroid reflection transverse waves physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=polarisation+Malus+law+polaroid+reflection+transverse+waves+physics" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CH 10 -->
+    <div class="chapter" data-chapter="10">
+      <div class="chapter-header" onclick="toggle(this)">
+        <span class="ch-num">CH 10</span>
+        <span class="ch-title">Thermodynamics</span>
+        <span class="ch-count">11 sub-topics</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topics-list">
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.1 — Heat & Temperature</div>
+            <div class="topic-name">Heat vs temperature; transit energy; thermal equilibrium</div>
+            <span class="yt-query">heat vs temperature thermal equilibrium physics difference</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=heat+vs+temperature+thermal+equilibrium+physics+difference" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.2 — Fundamentals of Ideal Gas</div>
+            <div class="topic-name">Boyle's law, Charles's law, PV ∝ T for ideal gas</div>
+            <span class="yt-query">Boyle Charles law ideal gas PV proportional T physics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=Boyle+Charles+law+ideal+gas+PV+proportional+T+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.3 — Kinetic Molecular Theory</div>
+            <div class="topic-name">Postulates; PV = ⅓Nm&lt;v²&gt; derivation; rms speed; average translational KE</div>
+            <span class="yt-query">kinetic molecular theory gas derivation PV 1/3 Nmv squared rms speed</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=kinetic+molecular+theory+gas+derivation+PV+1%2F3+Nmv+squared+rms+speed" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.4 — Internal Energy & Work</div>
+            <div class="topic-name">Internal energy of ideal gas; state function; work done by/on gas</div>
+            <span class="yt-query">internal energy ideal gas state function work done on gas thermodynamics</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=internal+energy+ideal+gas+state+function+work+done+on+gas+thermodynamics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.5 — First Law of Thermodynamics</div>
+            <div class="topic-name">First law; isothermal, adiabatic, isobaric, isochoric processes; calculations</div>
+            <span class="yt-query">first law thermodynamics isothermal adiabatic isobaric isochoric physics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=first+law+thermodynamics+isothermal+adiabatic+isobaric+isochoric+physics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.6 — Molar Specific Heat of Gases</div>
+            <div class="topic-name">Specific heat, molar specific heat, Cp > Cv, Cp − Cv = R derivation</div>
+            <span class="yt-query">molar specific heat Cp Cv gases derivation Cp minus Cv equals R</span>
+            <div class="tag-row"><span class="tag tag-r">R</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=molar+specific+heat+Cp+Cv+gases+derivation+Cp+minus+Cv+equals+R" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.7 — Reversible & Irreversible Processes</div>
+            <div class="topic-name">Concept of reversible and irreversible thermodynamic processes</div>
+            <span class="yt-query">reversible irreversible processes thermodynamics physics examples</span>
+            <div class="tag-row"><span class="tag tag-u">U</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=reversible+irreversible+processes+thermodynamics+physics+examples" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.8–10.9 — Second Law & Carnot Engine</div>
+            <div class="topic-name">Second law schematic; Carnot engine four processes PV diagram; efficiency derivation</div>
+            <span class="yt-query">second law thermodynamics Carnot engine efficiency derivation PV diagram</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=second+law+thermodynamics+Carnot+engine+efficiency+derivation+PV+diagram" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.10 — Refrigerator</div>
+            <div class="topic-name">Refrigerator as reverse heat engine; coefficient of performance derivation</div>
+            <span class="yt-query">refrigerator heat engine coefficient of performance derivation thermodynamics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">A</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=refrigerator+heat+engine+coefficient+of+performance+derivation+thermodynamics" target="_blank">▶ Search</a>
+        </div>
+        <div class="topic-item">
+          <div class="topic-info">
+            <div class="topic-slo">SLO 10.11 — Entropy</div>
+            <div class="topic-name">Entropy concept, positive/negative entropy, energy degradation, environmental crisis</div>
+            <span class="yt-query">entropy physics positive negative energy degradation environmental thermodynamics</span>
+            <div class="tag-row"><span class="tag tag-u">U</span><span class="tag tag-a">E</span></div>
+          </div>
+          <a class="yt-btn" href="https://www.youtube.com/results?search_query=entropy+physics+positive+negative+energy+degradation+environmental+thermodynamics" target="_blank">▶ Search</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end chaptersContainer -->
+
+  <p style="text-align:center; color:var(--muted); font-size:12px; margin-top:40px; font-family:'DM Mono',monospace;">
+    AKU-EB Physics HSSC Part I · Grade XI · 2025 Syllabus · Study Guide
+  </p>
+</div>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggle(header) {
+    const chapter = header.parentElement;
+    chapter.classList.toggle('open');
+  }
+
+  // Search filter
+  document.getElementById('searchInput').addEventListener('input', function() {
+    const q = this.value.toLowerCase().trim();
+    document.querySelectorAll('.topic-item').forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
+    });
+    // Auto-open chapters that have visible items
+    document.querySelectorAll('.chapter').forEach(ch => {
+      const visible = [...ch.querySelectorAll('.topic-item')].some(i => i.style.display !== 'none');
+      if (q) {
+        ch.classList.toggle('open', visible);
+      }
+    });
+  });
+
+  // Scroll to top button
+  window.addEventListener('scroll', () => {
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+  });
+</script>
+</body>
+</html>
